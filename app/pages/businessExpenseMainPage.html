@@ -15,8 +15,8 @@
          <div id="horizontalTab" style="style= display: block;width:100%;margin: 0px;padding-top: 24px;">
                <ul id="tab" class="resp-tabs-list" style="style= width:100%;">
 				 <li lang="en" class="active" class="resp-tab-item resp-tab-active" aria-controls="tab_item-0" role="tab" onclick ="addHeader();"> Business Expense</li>
-                <li lang="en" id ="CategoryEAId" class="resp-tab-item " aria-controls="tab_item-1" role="tab" onclick ="addHeader();"> Employee Advance</li>
-				 <li lang="en" class="resp-tab-item" aria-controls="tab_item-2" role="tab" onclick ="fetchBusiEmpAdv();" >Sync</li>
+                <li lang="en" id ="CategoryEAId" class="resp-tab-item hide" aria-controls="tab_item-1" role="tab" onclick ="addHeader();"> Employee Advance</li>
+				 <li lang="en" class="resp-tab-item" aria-controls="tab_item-1" role="tab" onclick ="fetchBusiEmpAdv();" >Sync</li>
                 </ul>				  	 
 				<div class="resp-tabs-container">
                     
@@ -26,21 +26,28 @@
           <div class="col-lg-12 clearfix addanexpense">
             <h1 lang="en">Add Business Expense</h1>
             <div class="expenseform clearfix" data-role="page" id="page1">
-              <ul style="padding-left: 25px;padding-right: 25px;">
+              <ul style="padding-left: 15px;padding-right: 15px;">
                 <li>
                   <div role="main" class="ui-content">
                     <input lang="en" id="expDate" type="text" class="span2 dp1" placeholder="Date" readonly="readonly">
                   </div>
-				</li>
+				        </li>
                 <li>
                   <input lang="en" placeholder="Account Head" id="accountHead" type="text" style="width: 98%">
                 </li>
                 <li>
                   <input lang="en" placeholder="Expense Name" id="expenseName" type="text" style="width: 98%">
                 </li>
-		        <li>
+		            <li>
                   <input lang="en" id="ratePerUnit" type="hidden" >
                 </li>
+                </ul>
+				  
+                <div id="spacerexpense"></div>
+                <div id="expensedatabl">
+                    <ul>
+
+
                 <li>
                   <input lang="en" id="expFromLoc" type="text" style="width: 49%" placeholder="From Location" onchange="resetUnit();" onblur="setNarration();">
 				  <input  lang="en" id="expToLoc" type="text" style="width: 49%" placeholder="To Location" onchange="resetUnit();" onblur="setNarration();">
@@ -51,35 +58,62 @@
                 
 				<li>
 				  <p><font lang="en" face="verdana" size="1" color="green">Unit is no. of persons/Kms/meals etc.</font></p>
-                  <input lang="en" id="expUnit" type="tel" style="width: 22%" placeholder="Units" onkeyup="calculatePerUnit();">
+                  <input lang="en" id="expUnit" type="tel" style="width: 25%" placeholder="Units" onkeyup="calculatePerUnit();">
 		  <input id="wayPointunitValue" value="" readonly="readonly" type="hidden">
 		  <input lang="en" id="expAmt" type="tel" style="width: 38%" placeholder="Amount" onkeyup="validate(); checkPerUnitExceptionStatusForBEAtLineLevel();checkAmount();">
                   <input id="currency" type="hidden" style="width: 33%">
 				  <p id="errorMsgArea" ><span id="errorSpan"></span></p>
 				</li>
 				
-               <div >
+				
+				<div >
 				<li style="text-align:left;">
                   <ul>
 					  <img src="images/camera.png" onclick="capturePhoto(0,'BE');" width="15%" height="15%" >
 					  <img src="images/gallery.png" onclick="getPhoto(pictureSource.PHOTOLIBRARY,0,'BE');" width="15%" height="15%" >
 			  		  <a id="mapLink" href="#openModal" style="" onclick="viewMap();" >
-					  <img src="images/google_map_icon.jpg" width="10%" height="10%" onload="loadImage();" id="mapImage" style="display : none;">
+						<img src="images/google_map_icon.jpg" width="10%" height="10%" onload="loadImage();" id="mapImage" style="display : none;">
 					  </a>
 					  <img style="display:none;width:40%;height:100px;align:right;" id="smallImageBE" src="" />
 					  <input style="display:none;" type="file" id="imageBE" />
 				  </ul>
 				 </li>
 			   </div>
-			
             <div lang="en" style="display:none" id="displayText" class="displayTextCSS">
                Expenses added successfully.
            </div>
-		   <div style="text-align:center;">
-            <button lang="en" class="btn btn-primary btn-lg " style="width: 40%;padding-top: 13px;padding-bottom: 13px;" onclick="saveBusinessDetails(0);">Save &amp; New</button>
-            <button lang="en" class="btn btn-primary btn-lg " style="width: 40%" onclick="saveBusinessDetails(1);">Save &amp; Go to Sync</button>
-			</div>
+
+         </ul>
+
+         <div style="text-align:center;">
+                <button lang="en" class="btn btn-primary btn-lg " style="width: 40%;padding-top: 13px;padding-bottom: 13px;" onclick="saveBusinessDetails(0);">Save &amp; New</button>
+                <button lang="en" class="btn btn-primary btn-lg " style="width: 40%" onclick="saveBusinessDetails(1);">Save &amp; Go to Sync</button>
           </div>
+       </div>
+          
+		  <div class="actionmherebox" id="actionmherebox" style="display: none;">
+                <button lang="en" class="btn btn-primary btn-lg iamherenow" onclick="iamherenow();">I am here!</button>
+				<a id="getGPSAdminBtn" class="" onclick="getEmplGPSDetails();">
+					<img src="images/google_map_icon.jpg" onload="loadImage();" id="mapLinknew">
+				</a>
+				<button lang="en" class="btn btn-primary btn-lg donefortoday" onclick="donefortoday();">Done for Today!</button>
+          </div>
+
+
+        <div id="iamherenow" style="display:none;">Got it.</div>
+        <div id="donefortoday" style="display:none;">
+            <p style="text-align: center;">This will close distance of today's travel.</p>
+            <p style="text-align: center;">Are you Sure?</p>
+            <div id="suremodalopen">
+              <button id="yesclose" class="btn-success" onclick="yesfortoday();">Yes</button>
+              <button id="noclose" class="btn-success" onclick="nofortoday();">No</button>
+            </div>
+         </div>
+         <div id="modalbgbox" style="display:none;"></div>
+        <div id="map_wrapper">
+             <div id="map_canvas" class="mapping"></div>
+             <button id="backtomain" style="display: none;" onclick="backtomainsection();">Back to main page</button>
+         </div>
         </div>
           </div>
       <script>
@@ -96,6 +130,7 @@ var currentYear;
 		maxDate: new Date(currentYear, currentMonth, currentDate)
 		});
 	});
+      onloadExpense();
 	currentMonth = currentMonth+1;
 	if(currentDate<10){currentDate='0'+currentDate}
 	if(currentMonth<10){currentMonth='0'+currentMonth}
@@ -106,9 +141,9 @@ var currentYear;
      j("#expenseName").change(function() {
       getPerUnitBasedOnExpense();
   });
-    onloadExpense();
+   
           
-  setTimeout(function(){setAccountHeadAndCode(); }, 700);
+  //setTimeout(function(){setAccountHeadAndCode(); }, 700);
 	function validate()
 	{
 		var field = document.getElementById("expAmt");

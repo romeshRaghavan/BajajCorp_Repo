@@ -3,8 +3,8 @@ var defaultPagePath='app/pages/';
 var headerMsg = "Expenzing";
 //var urlPath = 'http://1.255.255.36:13130/TnEV1_0AWeb/WebService/Login/'
 //var WebServicePath ='http://1.255.255.214:8085/NexstepWebService/mobileLinkResolver.service';
-//var WebServicePath = 'http://live.nexstepapps.com:8284/NexstepWebService/mobileLinkResolver.service';
-var WebServicePath ='http://1.255.255.36:9898/NexstepWebService/mobileLinkResolver.service';
+var WebServicePath = 'http://live.nexstepapps.com:8284/NexstepWebService/mobileLinkResolver.service';
+// var WebServicePath ='http://1.255.255.36:9898/NexstepWebService/mobileLinkResolver.service';
 var clickedFlagCar = false;
 var clickedFlagTicket = false;
 var clickedFlagHotel = false;
@@ -60,8 +60,11 @@ function login()
          data: JSON.stringify(jsonToBeSend),
          success: function(data) {
          	if (data.Status == 'Success'){
-                
-                if(data.hasOwnProperty('multiLangInMobile') && data.multiLangInMobile != null &&
+         		 var headerBackBtn=defaultPagePath+'categoryMsgPage.html';
+         		  j('#mainHeader').load(headerBackBtn);
+         		// createBusiExpMain();
+          		// setUserSessionDetails(data,jsonToBeSend);
+          	/* if(data.hasOwnProperty('multiLangInMobile') && data.multiLangInMobile != null &&
                    data.multiLangInMobile){
                        	var headerBackBtn=defaultPagePath+'withoutBckBtn.html';
 	                    var pageRef=defaultPagePath+'language.html';
@@ -69,16 +72,15 @@ function login()
                     j('#mainContainer').load(pageRef); 
                        appPageHistory.push(pageRef);
                     setUserStatusInLocalStorage("Valid");
-			        setUserSessionDetails(data,jsonToBeSend);
-                    j('#loading').hide();         
-        }else{
-            var headerBackBtn=defaultPagePath+'categoryMsgPage.html';
-	        var pageRef=defaultPagePath+'category.html';
-        	 j('#mainHeader').load(headerBackBtn);
-             j('#mainContainer').load(pageRef);
-              appPageHistory.push(pageRef);
+			        
+                    j('#loading').hide();
+        	}
+        	else
+        	{*/
+
+        		//createBusiExpMain();
+            
 			  //addEmployeeDetails(data);
-                 
 			  setUserStatusInLocalStorage("Valid");
 			  setUserSessionDetails(data,jsonToBeSend);
                            
@@ -88,24 +90,34 @@ function login()
                  synchronizeEAMasterData();
                   }
                }
-            
 			  if(data.TrRole){
 				synchronizeTRMasterData();
 				synchronizeTRForTS();  
 			  }
                 synchronizeBEMasterData();
-                
-                
-            if(data.hasOwnProperty('smartClaimsViaSMSOnMobile') && 
+
+			setTimeout(function(){ 
+		
+	      	  var pageRef=defaultPagePath+'businessExpenseMainPage.html';
+            	 j('#mainContainer').load(pageRef);
+            	 appPageHistory.push(pageRef);
+			}, 1500);
+            /*if(data.hasOwnProperty('smartClaimsViaSMSOnMobile') && 
                  data.smartClaimsViaSMSOnMobile != null){
                   if(data.EaInMobile){
                  synchronizeWhiteListMasterData();
 	               startWatch();
                   }
-                 }
-                }
+                 }*/
+                /*}*/
+
+                //createBusiExpMain();
 			
-			}else if(data.Status == 'Failure'){
+			}
+
+
+
+			else if (data.Status == 'Failure'){
  			   successMessage = data.Message;
 			   if(successMessage.length == 0){
 					successMessage = "Wrong UserName or Password";
@@ -227,6 +239,7 @@ function commanLogin(){
  function init() {
 	 var pgRef;
 	var headerBackBtn;
+
 	if(window.localStorage.getItem("EmployeeId")!= null){
 		if(window.localStorage.getItem("UserStatus")=='ResetPswd'){
 			headerBackBtn=defaultPagePath+'expenzingImagePage.html';
@@ -268,6 +281,8 @@ function commanLogin(){
 			});
 	});
 	appPageHistory.push(pgRef);
+
+	//createBusiExpMain();
  }
  
   function loaddate(){
@@ -482,6 +497,7 @@ function createAccHeadDropDown(jsonAccHeadArr){
 				for(var i=0; i<jsonAccHeadArr.length; i++ ){
 					var stateArr = new Array();
 					stateArr = jsonAccHeadArr[i];
+
 					jsonArr.push({id: stateArr.Label,name: stateArr.Value});
 				}
 			}
@@ -493,19 +509,25 @@ function createAccHeadDropDown(jsonAccHeadArr){
 				return 1
 			return 0 //default return value (no sorting)
 			})
+			console.log(jsonArr)
 			j("#accountHead").select2({
 				data:{ results: jsonArr, text: 'name' },
 				minimumResultsForSearch: -1,
-				initSelection: function (element, callback) {
-					callback(jsonArr[4]);
-					 getExpenseNamesBasedOnAccountHead();
-				},
+				/*initSelection: function (element, callback) {
+					//alert('test');
+					callback(jsonArr[1]);
+					getExpenseNamesBasedOnAccountHead(3);
+				},*/
 				formatResult: function(result) {
 					if ( ! isJsonString(result.id))
 						result.id = JSON.stringify(result.id);
 						return result.name;
 				}
-			}).select2("val","");
+			}).select2("val",3).trigger('change');
+			//j("#accountHead").select2("val", 3)
+			//Gaurav
+
+			
 			
 }
 function createTRAccHeadDropDown(jsonAccHeadArr){
@@ -534,6 +556,10 @@ function createExpNameDropDown(jsonExpNameArr){
 		for(var i=0; i<jsonExpNameArr.length; i++ ){
 			var stateArr = new Array();
 			stateArr = jsonExpNameArr[i];
+			//alert(stateArr.ExpenseID + " : " + stateArr.ExpenseName);
+			if(stateArr.ExpenseID === 2) {
+				stateArr.ExpenseName = "Travelling Allowance";
+			}
 			jsonExpArr.push({id: stateArr.ExpenseID,name: stateArr.ExpenseName});
 		}
 	}
@@ -553,12 +579,16 @@ function createExpNameDropDown(jsonExpNameArr){
 		initSelection: function (element, callback) {
 			callback(jsonExpArr[5]);
 		},
+
 		formatResult: function(result) {
 			if ( ! isJsonString(result.id))
 				result.id = JSON.stringify(result.id);
 				return result.name;
 		}
-	}).select2("val","");
+
+	})
+
+	.select2("val",""); 
 }
 
 function createCurrencyDropDown(jsonCurrencyArr){
@@ -1265,7 +1295,14 @@ function onloadTimePicker(){
  }
 
  function getExpenseNamesBasedOnAccountHead(){
+	// alert("123" +j("#accountHead").select2('data').id);
  	var accountHeadID = j("#accountHead").select2('data').id;
+ 	//if(accountHeadID != 3){
+ 		document.getElementById("expensedatabl").style.display = "block";
+ 		document.getElementById("spacerexpense").style.display = "none";
+ 		document.getElementById("actionmherebox").style.display = "none";
+ 	//}
+
       getExpenseNamesfromDB(accountHeadID);
  }
 
@@ -1273,6 +1310,15 @@ function onloadTimePicker(){
  function getPerUnitBasedOnExpense(){
 
  	var expenseNameID = j("#expenseName").select2('data').id;
+ 	if(expenseNameID === 2){
+ 		document.getElementById("expensedatabl").style.display = "none";
+ 		document.getElementById("spacerexpense").style.display = "block";
+ 		document.getElementById("actionmherebox").style.display = "block";
+ 	} else {
+ 		document.getElementById("expensedatabl").style.display = "block";
+ 		document.getElementById("spacerexpense").style.display = "none";
+ 		document.getElementById("actionmherebox").style.display = "none";
+ 	}
        getPerUnitFromDB(expenseNameID);
  }
 
@@ -1300,6 +1346,33 @@ function onloadTimePicker(){
 	     getCategoryFromDB(modeID);
 	 }
 
+function donefortoday(){
+
+	document.getElementById("donefortoday").style.display = "block";
+	document.getElementById("modalbgbox").style.display = "block";
+}
+
+function nofortoday(){
+	document.getElementById("donefortoday").style.display = "none";
+	document.getElementById("modalbgbox").style.display = "none";
+}
+
+function yesfortoday(){
+	document.getElementById("donefortoday").style.display = "none";
+	document.getElementById("modalbgbox").style.display = "none";
+	document.getElementById("iamherenow").style.display = "block";
+	iamherenow();
+}
+
+function iamherenow(){
+	document.getElementById("iamherenow").style.display = "block";
+	document.getElementById("modalbgbox").style.display = "block";
+
+	setTimeout(function(){ 
+		document.getElementById("iamherenow").style.display = "none";
+		document.getElementById("modalbgbox").style.display = "none";
+	}, 1500);
+}
 
 function setPerUnitDetails(transaction, results){
  		 
@@ -2937,8 +3010,10 @@ function fetchBusiEmpAdv(){
 
   function createBusiExpMain(){
 	resetImageData();
+	//setUserSessionDetails(data,jsonToBeSend);
 	var headerBackBtn=defaultPagePath+'backbtnPage.html';
-    var pageRef=defaultPagePath+'businessExpenseMainPage.html';
+	var pageRef=defaultPagePath+'businessExpenseMainPage.html';
+
 			j(document).ready(function() {
 				j('#mainHeader').load(headerBackBtn);
 				j('#mainContainer').load(pageRef);
@@ -3215,6 +3290,159 @@ function populateMainPage(){
                  }
     
          j('#loading').hide();
-     }
+}
 
 
+function backtomainsection() {
+	document.getElementById("map_wrapper").style.display = "none";
+
+}
+
+ /* GPS Code -- start */
+ var labels = 65;
+
+ function getLocation() {
+	var x = document.getElementById("demo");
+	if(navigator.geolocation) {
+		navigator.geolocation.watchPosition(showPosition);
+	} else { 
+		x.value = "Geolocation is not supported by this browser.";}
+}
+
+function showPosition(position) {
+	var lat = document.getElementById("lat");
+	var long = document.getElementById("long");
+	lat.innerHTML= "Latitude : "+position.coords.latitude ;
+ 	long.innerHTML = "Longitude :  "+position.coords.longitude;
+	let address = locationDetails(position.coords.latitude,position.coords.longitude);
+}
+
+
+function locationDetails(latitude,longitude) {
+	try {       
+		let locationDetails_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latitude+","+longitude;
+		console.log(locationDetails_url)
+		j.ajax({
+			url: locationDetails_url, 
+			type:"GET", async:false, 
+			success: locationSuccess,
+			// contentType:'application/json',
+			ContentType:'Access-Control-Allow-Headers',
+			crossDomain: true,
+			dataType: 'json',
+			error:locationFailure
+		});
+	}catch(e){alert("exception : " + e)}      
+}
+
+function locationSuccess(response,status,xhr) {
+	console.log("successful")
+	console.log("locationSuccess : " + response + " And status : " + status + " And xhr : " + xhr);
+	let locationDescription = response.results[0].formatted_address;
+	document.getElementById('formatted_address').innerHTML = locationDescription;
+	console.log("locationDescription = " + locationDescription);
+	//setUpMapLocation(response.results[0]);
+}
+
+
+function locationFailure(xhr,status,error) {
+	console.log("locationFailure : " + error + " And status : " + status + " And xhr : " + xhr);
+}
+
+
+function getEmplGPSDetails(){
+
+	document.getElementById("backtomain").style.display = "block";
+	document.getElementById("map_wrapper").style.display = "block";
+
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+         zoom : 12
+    };
+                    
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);
+        
+    // call our own api to fetch location data for a user.
+    // Multiple Markers
+    var markers = [
+        ['Gundecha Onclave, Mumbai', 19.106516,72.888883],
+        ['Sakinaka, Mumbai', 19.094896,72.886525],
+        ['Asalpha, Mumbai', 19.100227,72.895136],
+        ['Jagruti Nagar, Mumbai', 19.092633,72.901841],
+        ['Ghatkopar, Mumbai', 19.079024,72.908012]
+    ];
+     var flightPlanCoordinates = [
+          {lat: 19.106516, lng: 72.888883},
+          {lat:  19.094896, lng:72.886525},
+          {lat: 19.100227, lng:72.895136},
+          {lat: 19.092633, lng: 72.901841},
+          {lat: 19.079024, lng: 72.908012}
+        ];
+    
+   
+ 	var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+
+
+    //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+    	var lbl =  String.fromCharCode(labels);
+  		 
+    	 // Display multiple markers on a map
+     var infowindow = new google.maps.InfoWindow({
+          content: markers[i][0],
+           maxWidth: 200
+        });
+
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            label: lbl,
+             animation: google.maps.Animation.DROP,
+            title: markers[i][0],
+        });
+        
+        var content =markers[i][0];  
+
+ 		var infowindow = new google.maps.InfoWindow()
+
+		google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+       	 return function() {
+           infowindow.setContent(content);
+           infowindow.open(map,marker);
+        	};
+    	})(marker,content,infowindow)); 
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+        
+         labels++;
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    var boundsListener = google.maps.event.addListener(map, 'idle', function(event) {
+    	console.log(this.getZoom())
+        this.setZoom(13);
+        google.maps.event.removeListener(boundsListener);
+    });
+    /* var boundsListener = google.maps.event.addListener(map, 'bounds_changed', function(event) {
+    	console.log(this.getZoom())
+        this.setZoom(12);
+        google.maps.event.removeListener(boundsListener);
+    });*/
+    
+}
+/* GPS Code -- End  */

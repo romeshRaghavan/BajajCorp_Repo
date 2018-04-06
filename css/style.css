@@ -498,14 +498,14 @@ span.email {
 /*-- start tabs --*/
 .deals {
     background-color: #fff;
-	    border-bottom-left-radius: 0.3em;
-    -o-border-bottom-left-radius: 0.3em;
-    -moz-border-bottom-left-radius: 0.3em;
-    -webkit-border-bottom-right-radius: 0.3em;
-    border-bottom-right-radius: 0.3em;
-    -o-border-bottom-right-radius: 0.3em;
-    -moz-border-bottom-right-radius: 0.3em;
-    -webkit-border-bottom-right-radius: 0.3em;
+	    border-bottom-left-radius: 0;
+    -o-border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -o-border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
 }
 .resp-tabs-list,.resp-tabs-list1 {
 	width: 100%;
