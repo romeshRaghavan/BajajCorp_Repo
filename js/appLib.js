@@ -1753,7 +1753,22 @@ function fetchEmployeeAdvance() {
 	j('<th lang=\'en\'></th>').text("Narration From/To Loc").appendTo(rowTh); 	
 	j('<th lang=\'en\'></th>').text("Amt").appendTo(rowTh);
 	var cols = new Number(5);
-	 
+	var cur_dt = new Date();
+	var cur_dt_str = cur_dt.getDate()+"/"+cur_dt.getMonth()+"/"+cur_dt.getFullYear()+" "
+					+cur_dt.getHours()+":"+cur_dt.getMinutes()+":"+cur_dt.getSeconds();
+	var rowss = j('<tr></tr>').attr({ class: ["test"].join(' ') }).appendTo(mytable);
+					j('<td></td>').attr({ class: ["expDate"].join(' ') })
+					.html('<p style="color: black;">'+cur_dt_str+'</P>').appendTo(rowss);	
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Travel'+'</P>').appendTo(rowss).appendTo(rowss);
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 10 km'+'</P>').appendTo(rowss).appendTo(rowss);
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Rs 30'+'</P>').appendTo(rowss).appendTo(rowss);
+			  
+
+
+
 	mydb.transaction(function(t) {
 		var headerOprationBtn;
       t.executeSql('SELECT * FROM businessExpDetails INNER JOIN expNameMst ON businessExpDetails.expNameId =expNameMst.id INNER JOIN currencyMst ON businessExpDetails.currencyId =currencyMst.currencyId  INNER JOIN currencyConversionMst ON businessExpDetails.currencyId = currencyConversionMst.currencyId INNER JOIN accountHeadMst ON businessExpDetails.accHeadId =accountHeadMst.accountHeadId;', [],
@@ -1927,7 +1942,19 @@ function fetchBusinessExpNdEmployeeAdv() {
 	j('<th lang=\'en\'></th>').text("Narration From/To Loc").appendTo(rowTh); 	
 	j('<th lang=\'en\'></th>').text("Amt").appendTo(rowTh);
 	var cols = new Number(5);
-	 
+	var cur_dt = new Date();
+	var cur_dt_str = cur_dt.getDate()+"/"+cur_dt.getMonth()+"/"+cur_dt.getFullYear()+" "
+					+cur_dt.getHours()+":"+cur_dt.getMinutes()+":"+cur_dt.getSeconds();
+	var rowss = j('<tr></tr>').attr({ class: ["test"].join(' ') }).appendTo(mytable);
+					j('<td></td>').attr({ class: ["expDate"].join(' ') })
+					.html('<p style="color: black;">'+cur_dt_str+'</P>').appendTo(rowss);	
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Travel'+'</P>').appendTo(rowss).appendTo(rowss);
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 10 km'+'</P>').appendTo(rowss).appendTo(rowss);
+					j('<td></td>').attr({ class: ["expName"].join(' ') })
+					.html('<p style="color: black;">'+'Rs 30'+'</P>').appendTo(rowss).appendTo(rowss);
+			 
 	mydb.transaction(function(t) {
 		var headerOprationBtn;
       t.executeSql('SELECT * FROM businessExpDetails INNER JOIN expNameMst ON businessExpDetails.expNameId =expNameMst.id INNER JOIN currencyMst ON businessExpDetails.currencyId =currencyMst.currencyId  INNER JOIN currencyConversionMst ON businessExpDetails.currencyId = currencyConversionMst.currencyId INNER JOIN accountHeadMst ON businessExpDetails.accHeadId =accountHeadMst.accountHeadId;', [],

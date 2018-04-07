@@ -1362,6 +1362,8 @@ function yesfortoday(){
 	document.getElementById("modalbgbox").style.display = "none";
 	document.getElementById("iamherenow").style.display = "block";
 	iamherenow();
+	j('#loading_Cat').show();
+	viewBusinessExp();
 }
 
 function iamherenow(){
