@@ -1762,9 +1762,9 @@ function fetchEmployeeAdvance() {
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
 					.html('<p style="color: black;">'+'Travel'+'</P>').appendTo(rowss).appendTo(rowss);
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
-					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 10 km'+'</P>').appendTo(rowss).appendTo(rowss);
+					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 4 km'+'</P>').appendTo(rowss).appendTo(rowss);
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
-					.html('<p style="color: black;">'+'Rs 30'+'</P>').appendTo(rowss).appendTo(rowss);
+					.html('<p style="color: black;">'+'Rs 16'+'</P>').appendTo(rowss).appendTo(rowss);
 			  
 
 
@@ -1951,9 +1951,9 @@ function fetchBusinessExpNdEmployeeAdv() {
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
 					.html('<p style="color: black;">'+'Travel'+'</P>').appendTo(rowss).appendTo(rowss);
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
-					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 10 km'+'</P>').appendTo(rowss).appendTo(rowss);
+					.html('<p style="color: black;">'+'Gundecha onclave to Ghatkopar \n Distance: 4 km'+'</P>').appendTo(rowss).appendTo(rowss);
 					j('<td></td>').attr({ class: ["expName"].join(' ') })
-					.html('<p style="color: black;">'+'Rs 30'+'</P>').appendTo(rowss).appendTo(rowss);
+					.html('<p style="color: black;">'+'Rs 16'+'</P>').appendTo(rowss).appendTo(rowss);
 			 
 	mydb.transaction(function(t) {
 		var headerOprationBtn;
